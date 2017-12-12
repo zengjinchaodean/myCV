@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div id="app">
+    <timer-btn class="btn btn-default" @click="send" :disabled="disabled" v-ref:btn :second="5"></timer-btn>
+</div>
+
+<div id="timerBtn">
+    <button :disabled="disabled || time > 0">
+        {{ text }}
+    </button>
+</div>
+
+<script src="lib/js/vue.min.js"></script>
+<script>
+
+    Vue.component('timerBtn', {
+        template: '#timerBtn',
+        props: {
+            second: {
+                type: Number,
+                default: 60
+            },
+            disabled: {
+                type: Boolean,
+                default: false
+            }
+        },
+        data: function () {
+            return {
+                time: 0
+            }
+        },
+        methods: {
+            run: function () {
+                this.time = this.second
+                this.timer()
+            },
+            timer: function () {
+                if (this.time > 0) {
+                    this.time--;
+                    setTimeout(this.timer, 1000);
+                }
+            }
+        },
+        computed: {
+            text: function () {
+                return this.time > 0 ? this.time + 's 后重新获取' : '获取验证码';
+            }
+        }
+    });
